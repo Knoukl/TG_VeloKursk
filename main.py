@@ -8,7 +8,6 @@ import logging
 from fastkml import kml, geometry
 import requests
 from math import ceil
-from datetime import datetime
 from haversine import haversine, Unit
 
 
@@ -54,6 +53,7 @@ def wind():
 
     return ratio[itg]
 
+
 def pogoda(idk):
     bad_pgd = ['Thunderstorm', 'Drizzle', 'Rain', 'Snow', 'Squall', 'Tornado']
     api_key = "801be1b4d54c629802744b8d9b2ff85d"
@@ -91,26 +91,26 @@ class FindState:
     WAITING_LEVEL = 'waiting_level'
 
 
-#def weather(city):
-#    api_key = "801be1b4d54c629802744b8d9b2ff85d"
-#    url = f'http://api.openweathermap.org/data/2.5/forecast?q=Kursk,RU&appid={api_key}'
-#    response = requests.get(url)
-#    print(response)
-#    # Проверяем успешность запроса
-#    if response.status_code == 200:
-#        # Данные о погоде в формате JSON
-#        weather_data = response.json()
-#        # Выводим данные о погоде
-#        print(f"Погода в Курске на сегодня: "
-#              f"{str(datetime.fromtimestamp(weather_data['list'][0]['dt'])).split()[1][:-3]}")
-#        print(f"Температура: {int(weather_data['list'][0]['main']['temp']) - 273} °C")
-#        print(f"Атмосферное давление: {weather_data['list'][0]['main']['pressure']} hPa")
-#        print(f"Влажность: {weather_data['list'][0]['main']['humidity']} %")
-#        print(f"Осадки: {weather_data['list'][0]['weather'][0]['main']}")
-#        print(f"Направление ветра: {weather_data['list'][0]['wind']['deg']}°")
-#        print(f"Скорость ветра: {weather_data['list'][0]['wind']['speed']} м/c")
-#    else:
-#        print("Не удалось получить данные о погоде")
+"""def weather(city):
+    api_key = "801be1b4d54c629802744b8d9b2ff85d"
+    url = f'http://api.openweathermap.org/data/2.5/forecast?q=Kursk,RU&appid={api_key}'
+    response = requests.get(url)
+    print(response)
+    # Проверяем успешность запроса
+    if response.status_code == 200:
+        # Данные о погоде в формате JSON
+        weather_data = response.json()
+        # Выводим данные о погоде
+        print(f"Погода в Курске на сегодня: "
+              f"{str(datetime.fromtimestamp(weather_data['list'][0]['dt'])).split()[1][:-3]}")
+        print(f"Температура: {int(weather_data['list'][0]['main']['temp']) - 273} °C")
+        print(f"Атмосферное давление: {weather_data['list'][0]['main']['pressure']} hPa")
+        print(f"Влажность: {weather_data['list'][0]['main']['humidity']} %")
+        print(f"Осадки: {weather_data['list'][0]['weather'][0]['main']}")
+        print(f"Направление ветра: {weather_data['list'][0]['wind']['deg']}°")
+       print(f"Скорость ветра: {weather_data['list'][0]['wind']['speed']} м/c")
+    else:
+        print("Не удалось получить данные о погоде")"""
 
 
 @bot.message_handler(func=lambda message: True)
