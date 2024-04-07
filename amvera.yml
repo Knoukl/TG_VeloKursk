@@ -1,7 +1,9 @@
+---
 meta:
-  version: "3.9"
-  toolchain: pip
   environment: python
+  toolchain:
+    name: pip
+    version: 3.9
 build:
   requirementsPath: requirements.txt
 run:

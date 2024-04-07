@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Float, create_engine, LargeBinar
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
-engine = create_engine("sqlite:///velo.db")
+engine = create_engine("sqlite:///../data/velo.db")
 
 
 class User(Base):

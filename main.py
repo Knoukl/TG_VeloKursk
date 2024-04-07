@@ -43,18 +43,18 @@ def wind():
     response = requests.get(url)
     weather_data = response.json()
     wnd = weather_data['list'][0]['wind']['deg']
-    min = float('inf')
+    minim = float('inf')
     itg = ''
     ratio = {0: 'C', 45: 'СВ', 90: 'В', 135: 'ЮВ', 180: 'Ю', 225: 'ЮЗ', 270: 'З', 315: 'СЗ', 360: 'С'}
     for i in ratio:
-        if abs(i - int(wnd)) < min:
-            min = abs(i - int(wnd))
+        if abs(i - int(wnd)) < minim:
+            minim = abs(i - int(wnd))
             itg = i
 
     return ratio[itg]
 
 
-def pogoda(idk):
+def pogoda():
     bad_pgd = ['Thunderstorm', 'Drizzle', 'Rain', 'Snow', 'Squall', 'Tornado']
     api_key = "801be1b4d54c629802744b8d9b2ff85d"
     url = f'http://api.openweathermap.org/data/2.5/forecast?q=Kursk,RU&appid={api_key}'
@@ -64,7 +64,7 @@ def pogoda(idk):
     if pgd in bad_pgd:
         return 'Сегодня неблагоприятная погода, вам лучше воздержаться от поездки!'
     else:
-        return 'Сегодня отличная погода для проездки!'
+        return 'Сегодня отличная погода для поездки!'
 
 
 @bot.message_handler(commands=['tracks'])
@@ -134,11 +134,13 @@ def handle_message(message):
                 # Если не найдено ни одного маршрута, выбираем случайный маршрут
                 random_track = session.query(Track).order_by(func.random()).first()
                 if random_track:
-                    media = [telebot.types.InputMediaPhoto(random_track.photo1), telebot.types.InputMediaPhoto(random_track.photo2)]
+                    media = [telebot.types.InputMediaPhoto(random_track.photo1),
+                             telebot.types.InputMediaPhoto(random_track.photo2)]
                     caption = f"Название: {random_track.name}\nОписание: {random_track.description}\n" \
-                              f"\nПротяженность маршрута: {random_track.distance}\n\n{pogoda('www')}"
+                              f"\nПротяженность маршрута: {int(random_track.distance)} КМ\n\n{pogoda()} км"
                     bot.send_message(user_id,
-                                     f"Не найдено маршрутов с сложностью {difficulty} и основным направлением ветра {primary_wind}. "
+                                     f"Не найдено маршрутов с сложностью {difficulty} и основным направлением ветра "
+                                     f"{primary_wind}. "
                                      f"Вот случайный маршрут:")
                     bot.send_media_group(user_id, media)
                     bot.send_document(user_id, random_track.file, caption=caption)
@@ -149,7 +151,7 @@ def handle_message(message):
                 # Отправляем пользователю все найденные маршруты
                 media = [telebot.types.InputMediaPhoto(track.photo1), telebot.types.InputMediaPhoto(track.photo2)]
                 caption = f"Название: {track.name}\nОписание: {track.description}\n" \
-                          f"\nПротяженность маршрута: {track.distance}\n\n{pogoda('www')}"
+                          f"\nПротяженность маршрута: {int(track.distance)}\n\n{pogoda()}"
                 bot.send_media_group(user_id, media)
                 bot.send_document(user_id, track.file, caption=caption)
 
@@ -184,8 +186,6 @@ def handle_message(message):
                 session.commit()
             else:
                 bot.send_message(user_id, 'Вы неверно ввели напрвление ветра, проверьте раскладку и CAPS')
-                
-
     else:
         bot.reply_to(message, 'Сначала напишите /start, чтобы зарегистрироваться.')
 
