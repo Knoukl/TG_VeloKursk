@@ -9,7 +9,8 @@ from fastkml import kml, geometry
 import requests
 from math import ceil
 from haversine import haversine, Unit
-
+import time
+time.sleep(15)
 
 bot = telebot.TeleBot(BOT_TOKEN)
 Base.metadata.create_all(engine)
@@ -139,9 +140,9 @@ def handle_message(message):
                     caption = f"Название: {random_track.name}\nОписание: {random_track.description}\n" \
                               f"\nПротяженность маршрута: {int(random_track.distance)} КМ\n\n{pogoda()} км"
                     bot.send_message(user_id,
-                                     f"Не найдено маршрутов с сложностью {difficulty} и основным направлением ветра "
-                                     f"{primary_wind}. "
-                                     f"Вот случайный маршрут:")
+                                     f'Не найдено маршрутов с сложностью {difficulty} и основным направлением ветра'
+                                     f' "{primary_wind}".'
+                                     f'Вот случайный маршрут:')
                     bot.send_media_group(user_id, media)
                     bot.send_document(user_id, random_track.file, caption=caption)
 
@@ -151,7 +152,7 @@ def handle_message(message):
                 # Отправляем пользователю все найденные маршруты
                 media = [telebot.types.InputMediaPhoto(track.photo1), telebot.types.InputMediaPhoto(track.photo2)]
                 caption = f"Название: {track.name}\nОписание: {track.description}\n" \
-                          f"\nПротяженность маршрута: {int(track.distance)}\n\n{pogoda()}"
+                          f"\nПротяженность маршрута: {int(track.distance)} КМ\n\n{pogoda()}"
                 bot.send_media_group(user_id, media)
                 bot.send_document(user_id, track.file, caption=caption)
 
